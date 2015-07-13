@@ -16,6 +16,12 @@
             android:layout_toLeftOf="@+id/doneButton"
             android:layout_alignBottom="@+id/doneButton"
             android:gravity="center_vertical"/>
+    <TextView
+        android:id="@+id/taskId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        />
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
