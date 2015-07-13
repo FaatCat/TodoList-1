@@ -30,12 +30,9 @@ public class MainActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		UI.updateUI(this);
-        Log.v("tag","a;dslkfjvvvvvvvvvvvvwoavn");
-        Log.d("tag","a;dslkfjwdddddddoavn");
-        Log.w("tag","a;dslkfjwwwwwwwwoavn");
-        Log.i("tag","a;dslkfjwoiiiiiiiiavn");
-        Log.e("tag","a;dslkfjwoaveeeeeeen");
-	}
+//        UI.toast(TaskContract.Columns._ID);
+        Log.d("mainactivity","onCreate");
+        }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,19 +53,23 @@ public class MainActivity extends ListActivity {
 	}
 
 	public void onDoneButtonClick(View view) {
-		View v = (View) view.getParent();
-		TextView taskTextView = (TextView) v.findViewById(R.id.taskTextView);
-		String task = taskTextView.getText().toString();
+		Log.d("mainactivity","doneclicked");
+        View v = (View) view.getParent();
+		TextView taskIdView = (TextView) v.findViewById(R.id.taskId);
+        String taskId = taskIdView.getText().toString();
+//		String taskName = taskTextView.getText().toString();
 
 		String sql = String.format("DELETE FROM %s WHERE %s = '%s'",
-						TaskContract.TABLE,
-						task);
-
-
+                        TaskContract.TABLE,
+						"_id",
+                        taskId
+						);
+        Log.d("mainactivity","done2");
 		helper = new TaskDBHelper(MainActivity.this);
 		SQLiteDatabase sqlDB = helper.getWritableDatabase();
 		sqlDB.execSQL(sql);
 		UI.updateUI(this);
+        Log.d("mainactivity","done3");
 	}
 
     private class UIFunctions {
@@ -107,12 +108,12 @@ public class MainActivity extends ListActivity {
         }
 
         public void updateUI(final Context context) {
+            Log.d("UI","updateUI");
             helper = new TaskDBHelper(MainActivity.this);
             SQLiteDatabase sqlDB = helper.getReadableDatabase();
             Cursor cursor = sqlDB.query(TaskContract.TABLE,
                     new String[]{TaskContract.Columns._ID, TaskContract.Columns.TASK},
                     null, null, null, null, null);
-
             listAdapter = new SimpleCursorAdapter(
                     context,
                     R.layout.task_view,
@@ -121,8 +122,8 @@ public class MainActivity extends ListActivity {
                     new int[]{R.id.taskTextView},
                     0
             );
-
             MainActivity.this.setListAdapter(listAdapter);
+            sqlDB.close();
         }
     }
 }

@@ -68,16 +68,16 @@ public class Task {
         TaskDBHelper dbHelper = new TaskDBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-
         values.clear();
-        values.put(TaskContract.Columns.TASK,newTask.get_name());
+        values.put(TaskContract.Columns.TASK, newTask.get_name());
 
         long result = db.insertOrThrow(TaskContract.TABLE, null, values);
+        db.close();
+
         if (result != -1) {
 //            INSERT SUCCESSFUL - RESULT: ROWID OF NEW ROW
             return 0;
-        }
-        else {
+        } else {
 //            ERROR IN INSERT
             return -1;
         }
