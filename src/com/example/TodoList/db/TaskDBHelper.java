@@ -8,25 +8,26 @@ import android.util.Log;
 
 public class TaskDBHelper extends SQLiteOpenHelper {
 
-	public TaskDBHelper(Context context) {
-		super(context, TaskContract.DB_NAME, null, TaskContract.DB_VERSION);
-	}
+    public TaskDBHelper(Context context) {
+        super(context, TaskContract.DB_NAME, null, TaskContract.DB_VERSION);
+    }
 
-	@Override
-	public void onCreate(SQLiteDatabase sqlDB) {
-		String sqlQuery =
-				String.format("CREATE TABLE %s (" +
-						"%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
-						"%s TEXT)",TaskContract.Columns.ID, TaskContract.TABLE,
-								    TaskContract.Columns.TASK);
+    @Override
+    public void onCreate(SQLiteDatabase sqlDB) {
+        String sqlQuery =
+                String.format("CREATE TABLE %s (" +
+                                "%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                "%s TEXT)", TaskContract.TABLE,
+                        TaskContract.Columns.ID,
+                        TaskContract.Columns.TASK);
 
-		Log.e("TaskDBHelper","Query to form table: "+sqlQuery);
-		sqlDB.execSQL(sqlQuery);
-	}
+        Log.e("TaskDBHelper", "Query to form table: " + sqlQuery);
+        sqlDB.execSQL(sqlQuery);
+    }
 
-	@Override
-	public void onUpgrade(SQLiteDatabase sqlDB, int i, int i2) {
-		sqlDB.execSQL("DROP TABLE IF EXISTS "+TaskContract.TABLE);
-		onCreate(sqlDB);
-	}
+    @Override
+    public void onUpgrade(SQLiteDatabase sqlDB, int i, int i2) {
+        sqlDB.execSQL("DROP TABLE IF EXISTS " + TaskContract.TABLE);
+        onCreate(sqlDB);
+    }
 }

@@ -84,6 +84,7 @@ public class MainActivity extends ListActivity {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     String task = inputField.getText().toString();
                     Task newTask = new Task();
+                    newTask.set_name(task);
                     addTaskError(Task.addTask(context, newTask));
                     updateUI(context);
                 }
@@ -112,7 +113,7 @@ public class MainActivity extends ListActivity {
             helper = new TaskDBHelper(MainActivity.this);
             SQLiteDatabase sqlDB = helper.getReadableDatabase();
             Cursor cursor = sqlDB.query(TaskContract.TABLE,
-                    new String[]{TaskContract.Columns._ID, TaskContract.Columns.TASK},
+                    new String[]{TaskContract.Columns.ID, TaskContract.Columns.TASK},
                     null, null, null, null, null);
             listAdapter = new SimpleCursorAdapter(
                     context,
