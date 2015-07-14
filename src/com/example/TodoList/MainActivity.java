@@ -61,7 +61,7 @@ public class MainActivity extends ListActivity {
 
 		String sql = String.format("DELETE FROM %s WHERE %s = '%s'",
                         TaskContract.TABLE,
-						"_id",
+						TaskContract.Columns.ID,
                         taskId
 						);
         Log.d("mainactivity","done2");
