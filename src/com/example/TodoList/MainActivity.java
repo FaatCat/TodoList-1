@@ -99,13 +99,13 @@ public class MainActivity extends ListActivity {
         }
 
         public void updateUI(final Context context) {
-            Log.d("UI","updateUI");
+            Log.d("UI","updateUI" + String.format("%s=0",TaskContract.Columns.isDone));
             helper = new TaskDBHelper(MainActivity.this);
             SQLiteDatabase sqlDB = helper.getReadableDatabase();
             Cursor cursor = sqlDB.query(TaskContract.TABLE,
                     new String[]{TaskContract.Columns.ID+" _id", TaskContract.Columns.TASK},
-                    null, null, null, null, null);
-
+                    String.format("%s=0",TaskContract.Columns.isDone),
+                    null, null, null, null);
             listAdapter = new SimpleCursorAdapter(
                     context,
                     R.layout.task_view,

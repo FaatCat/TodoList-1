@@ -2,7 +2,7 @@ package com.example.TodoList.db;
 
 public class TaskContract {
 	public static final String DB_NAME = "com.example.TodoList.db.tasks";
-	public static final int DB_VERSION = 3;
+	public static final int DB_VERSION = 4;
 	public static final String TABLE = "tasks";
 
 
