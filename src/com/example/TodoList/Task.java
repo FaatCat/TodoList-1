@@ -3,6 +3,7 @@ package com.example.TodoList;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.TodoList.db.TaskContract;
 import com.example.TodoList.db.TaskDBHelper;
@@ -18,6 +19,7 @@ public class Task {
     private String _description;
     private java.util.Date _createdDate;
     private java.util.Date _dueDate;
+    private boolean isDone;
     private boolean _showNotification;
     //private Color _color;
 
@@ -81,5 +83,19 @@ public class Task {
 //            ERROR IN INSERT
             return -1;
         }
+    }
+
+    public static int doneTask(Context context,int taskID) {
+        String sql = String.format("UPDATE %s SET %s=1 WHERE %s = %d",
+                TaskContract.TABLE,
+                TaskContract.Columns.isDone,
+                TaskContract.Columns.ID,
+                taskID
+        );
+        SQLiteDatabase sqlDB = new TaskDBHelper(context).getWritableDatabase();
+        sqlDB.execSQL(sql);
+        Log.d("SQL", sql);
+        sqlDB.close();
+        return 0;
     }
 }

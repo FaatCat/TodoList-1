@@ -30,8 +30,6 @@ public class MainActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		UI.updateUI(this);
-//        UI.toast(TaskContract.Columns._ID);
-        Log.d("mainactivity","onCreate");
         }
 
 	@Override
@@ -53,23 +51,7 @@ public class MainActivity extends ListActivity {
 	}
 
 	public void onDoneButtonClick(View view) {
-		Log.d("mainactivity","doneclicked");
-        View v = (View) view.getParent();
-		TextView taskIdView = (TextView) v.findViewById(R.id.taskId);
-        String taskId = taskIdView.getText().toString();
-//		String taskName = taskTextView.getText().toString();
-
-		String sql = String.format("DELETE FROM %s WHERE %s = '%s'",
-                        TaskContract.TABLE,
-						TaskContract.Columns.ID,
-                        taskId
-						);
-        Log.d("mainactivity","done2");
-		helper = new TaskDBHelper(MainActivity.this);
-		SQLiteDatabase sqlDB = helper.getWritableDatabase();
-		sqlDB.execSQL(sql);
-		UI.updateUI(this);
-        Log.d("mainactivity","done3");
+        UI.doneTask(this,view);
 	}
 
     private class UIFunctions {
@@ -94,6 +76,14 @@ public class MainActivity extends ListActivity {
             return true;
         }
 
+        public void doneTask(final Context context, final View doneButton) {
+            View TaskView = (View) doneButton.getParent();
+            TextView taskIdView = (TextView) TaskView.findViewById(R.id.taskId);
+            int taskId = Integer.valueOf(taskIdView.getText().toString());
+            Task.doneTask(context,taskId);
+            UI.updateUI(context);
+        }
+
         private void addTaskError(int errorCode) {
             if (errorCode!=0) {
                 toast("DB: Error adding task!");
@@ -113,14 +103,15 @@ public class MainActivity extends ListActivity {
             helper = new TaskDBHelper(MainActivity.this);
             SQLiteDatabase sqlDB = helper.getReadableDatabase();
             Cursor cursor = sqlDB.query(TaskContract.TABLE,
-                    new String[]{TaskContract.Columns.ID, TaskContract.Columns.TASK},
+                    new String[]{TaskContract.Columns.ID+" _id", TaskContract.Columns.TASK},
                     null, null, null, null, null);
+
             listAdapter = new SimpleCursorAdapter(
                     context,
                     R.layout.task_view,
                     cursor,
-                    new String[]{TaskContract.Columns.TASK},
-                    new int[]{R.id.taskTextView},
+                    new String[]{TaskContract.Columns.TASK,"_id"},
+                    new int[]{R.id.taskTextView,R.id.taskId},
                     0
             );
             MainActivity.this.setListAdapter(listAdapter);
